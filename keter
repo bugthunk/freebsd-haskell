@@ -30,6 +30,7 @@ keter_start()
    fi
 
    cd $prefix
+   echo "Starting keter..."
    /usr/sbin/daemon -f -p ${pidfile} ${command} ${command_args}
 }
 
@@ -40,7 +41,8 @@ keter_stop()
   pid=$(check_pidfile $pidfile $name)
 
   kill $pid
-  wait_for_pids $pid >/dev/null 
+  wait_for_pids $pid > /dev/null 
+  echo "Stopping keter..."
 }
 
 load_rc_config $name
