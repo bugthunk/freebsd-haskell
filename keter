@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# PROVIDE: keter
+# REQUIRE: LOGIN cleanvar
+# KEYWORDS: shutdown
+
 . /etc/rc.subr
 
 name="keter"
