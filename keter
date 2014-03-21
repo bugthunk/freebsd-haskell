@@ -1,0 +1,43 @@
+#!/bin/sh
+
+. /etc/rc.subr
+
+name="keter"
+rcvar="keter_enable"
+
+prefix="/usr/local/${name}"
+command="${prefix}/bin/${name}"
+pidfile="/var/run/${name}.pid"
+command_args="$prefix/etc/${name}-config.yaml"
+
+start_cmd="${name}_start"
+stop_cmd="${name}_stop"
+
+keter_start()
+{
+   local pid
+
+   pid=$(check_pidfile $pidfile $command)
+
+   # -n: "if string length is non-zero".
+   if [ -n "${pid}" ]; then
+    echo "There is a already pid for this process; pid=${pid}."
+    continue;
+   fi
+
+   cd $prefix
+   /usr/sbin/daemon -f -p ${pidfile} ${command} ${command_args}
+}
+
+keter_stop()
+{
+  local pid
+
+  pid=$(check_pidfile $pidfile $name)
+
+  kill $pid
+  wait_for_pids $pid >/dev/null 
+}
+
+load_rc_config $name
+run_rc_command "$1"
