@@ -15,7 +15,7 @@ pidfile="/var/run/${name}.pid"
 command_args="$prefix/etc/${name}-config.yaml"
 
 start_cmd="${name}_start"
-stop_cmd="${name}_stop"
+
 
 keter_start()
 {
@@ -30,20 +30,10 @@ keter_start()
    fi
 
    cd $prefix
-   echo "Starting keter..."
    /usr/sbin/daemon -f -p ${pidfile} ${command} ${command_args}
 }
 
-keter_stop()
-{
-  local pid
 
-  pid=$(check_pidfile $pidfile $name)
-
-  kill $pid
-  wait_for_pids $pid > /dev/null 
-  echo "Stopping keter..."
-}
 
 load_rc_config $name
 run_rc_command "$1"
